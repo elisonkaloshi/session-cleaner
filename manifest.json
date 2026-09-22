@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Session Cleaner",
+  "version": "1.0.1",
+  "description": "Selectively clear local Google, Microsoft and current-site sessions from this browser profile.",
+  "minimum_chrome_version": "119",
+  "permissions": [
+    "browsingData",
+    "activeTab",
+    "tabs",
+    "cookies"
+  ],
+  "host_permissions": [
+    "*://google.com/*",
+    "*://*.google.com/*",
+    "*://accounts.google.com/*",
+    "*://youtube.com/*",
+    "*://*.youtube.com/*",
+    "*://microsoft.com/*",
+    "*://*.microsoft.com/*",
+    "*://microsoftonline.com/*",
+    "*://*.microsoftonline.com/*",
+    "*://live.com/*",
+    "*://*.live.com/*",
+    "*://office.com/*",
+    "*://*.office.com/*",
+    "*://outlook.com/*",
+    "*://*.outlook.com/*",
+    "*://office365.com/*",
+    "*://*.office365.com/*"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_title": "Session Cleaner",
+    "default_popup": "popup.html"
+  }
+}

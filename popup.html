@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session Cleaner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header><h1>Session Cleaner</h1><p>Clear selected browser sessions without wiping your entire profile.</p></header>
+    <section class="panel" aria-label="Select providers">
+      <label class="option"><input id="google" type="checkbox" checked><span><strong>Google</strong><small>Google sign-in and related account domains</small></span></label>
+      <label class="option"><input id="microsoft" type="checkbox" checked><span><strong>Microsoft</strong><small>Microsoft, Live and Microsoft 365 domains</small></span></label>
+      <label class="option"><input id="target" type="checkbox" checked><span><strong>Current site</strong><small id="targetLabel">Checking active tab...</small></span></label>
+      <label class="option"><input id="storage" type="checkbox" checked><span><strong>Also clear site storage</strong><small>Local storage, IndexedDB, Cache Storage, service workers and file systems</small></span></label>
+    </section>
+    <p class="note">Cookie cleanup affects the whole registrable domain, including sibling subdomains. Provider cleanup may sign you out of personal accounts in this Chrome profile. It does not revoke server-side sessions or sign you out of other devices.</p>
+    <button id="review" class="primary">Review cleanup</button>
+    <section id="confirmation" class="panel hidden" aria-label="Confirm cleanup">
+      <h2>Confirm local deletion</h2><p id="scope"></p><p class="warning">This cannot be undone. Close unrelated work first.</p>
+      <div class="buttons"><button id="cancel" class="secondary">Cancel</button><button id="confirm" class="danger">Clear selected data</button></div>
+    </section>
+    <section id="statusPanel" class="panel hidden" aria-live="polite"><h2>Verification status</h2><p id="status"></p><ul id="details"></ul></section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
