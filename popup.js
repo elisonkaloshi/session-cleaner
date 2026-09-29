@@ -202,6 +202,27 @@ async function removeDomainCookies(domains) {
   return {removed, errors};
 }
 
+async function reloadAffectedTabs(origins, domains) {
+  const tabs = await chrome.tabs.query({});
+  const originSet = new Set(origins);
+  let reloaded = 0;
+  for (const tab of tabs) {
+    let url = null;
+    try {
+      url = new URL(tab.url);
+    } catch {
+      continue;
+    }
+    if (!["http:", "https:"].includes(url.protocol)) continue;
+    const matchesOrigin = originSet.has(url.origin);
+    const matchesDomain = domains.some(domain => domainMatches(url.hostname, domain));
+    if (!matchesOrigin && !matchesDomain) continue;
+    await chrome.tabs.reload(tab.id);
+    reloaded += 1;
+  }
+  return reloaded;
+}
+
 async function clean() {
   if (!confirmedSelection) return;
   const {choice, origins} = confirmedSelection;
@@ -237,10 +258,12 @@ async function clean() {
     }
     const customCookieResult = customPermission ? await removeDomainCookies(choice.custom.domains) : {removed: 0, errors: []};
     const counts = await cookieCounts(domains);
+    const reloadedTabs = await reloadAffectedTabs(origins, domains);
     const remaining = counts.filter(result => result.count > 0);
     const failed = counts.filter(result => result.error);
     const lines = [
       `Chrome completed the selected local-data deletion for ${origins.length} origin(s).`,
+      `Reloaded ${reloadedTabs} affected tab(s).`,
       customCookieResult.removed ? `Removed ${customCookieResult.removed} custom-domain cookie(s).` : "",
       ...customCookieResult.errors.map(error => `Custom cookie removal issue: ${error}`),
       ...counts.map(item => item.error ? `${item.domain}: cookie check unavailable` : `${item.domain}: ${item.count} accessible cookie(s) remaining`),
@@ -248,7 +271,7 @@ async function clean() {
       choice.target && !targetPermission ? "Site cookie inspection permission was not granted; site cleanup still ran." : "",
       choice.custom.domains.length && !customPermission ? "Custom-domain permission was not granted; custom-domain cookies were not inspected or removed." : "",
       permissionError ? `Permission request issue: ${permissionError}` : "",
-      "This does NOT verify server-side logout, token revocation, other devices, or cookies outside inspected domains/stores. Reload the affected tabs before testing."
+      "This does NOT verify server-side logout, token revocation, other devices, or cookies outside inspected domains/stores."
     ].filter(Boolean);
     setStatus(remaining.length || failed.length ? "Local cleanup completed; verification incomplete." : "Local cleanup completed; no accessible cookies found in inspected domains.", lines);
   } catch (error) {
