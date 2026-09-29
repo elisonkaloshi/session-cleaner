@@ -15,6 +15,10 @@
       <label class="option"><input id="target" type="checkbox" checked><span><strong>Current site</strong><small id="targetLabel">Checking active tab...</small></span></label>
       <label class="option"><input id="storage" type="checkbox" checked><span><strong>Also clear site storage</strong><small>Local storage, IndexedDB, Cache Storage, service workers and file systems</small></span></label>
     </section>
+    <section class="panel" aria-label="Custom domains">
+      <label class="field" for="customDomains"><strong>Additional domains</strong><small>One per line or comma-separated. Use example.com, https://app.example.com, or *.example.com.</small></label>
+      <textarea id="customDomains" rows="6" spellcheck="false" placeholder="example.com&#10;*.company.com"></textarea>
+    </section>
     <p class="note">Cookie cleanup affects the whole registrable domain, including sibling subdomains. Provider cleanup may sign you out of personal accounts in this Chrome profile. It does not revoke server-side sessions or sign you out of other devices.</p>
     <button id="review" class="primary">Review cleanup</button>
     <section id="confirmation" class="panel hidden" aria-label="Confirm cleanup">

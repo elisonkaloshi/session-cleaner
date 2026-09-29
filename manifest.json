@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Session Cleaner",
-  "version": "1.0.1",
-  "description": "Selectively clear local Google, Microsoft and current-site sessions from this browser profile.",
+  "version": "1.1.0",
+  "description": "Selectively clear local sessions for providers, the current site and custom domains from this browser profile.",
   "minimum_chrome_version": "119",
   "permissions": [
     "browsingData",
